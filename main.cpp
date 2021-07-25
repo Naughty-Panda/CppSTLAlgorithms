@@ -4,6 +4,7 @@
 //////////////////////////////////////////
 
 #include <iostream>
+#include <cmath>
 #include <vector>
 #include <algorithm>
 #include <list>
@@ -53,6 +54,10 @@ void print(const T& cnt) {
 
 int main() {
 
+	//////////////////////////////////////////
+	//	4.1
+	//////////////////////////////////////////
+
 	// Default std::vector
 	std::vector<int> vec{ 1,2,3,4,5,6,7,8,9 };
 	print(vec);
@@ -96,6 +101,29 @@ int main() {
 	insert_sorted_v2(l, 1.02f);
 	std::cout << '\n';
 	print(l);
+
+	//////////////////////////////////////////
+	//	4.2
+	//////////////////////////////////////////
+
+	float angle = 0.0f;
+	std::vector<float> analog(100);
+	std::vector<int> digital(100);
+
+	// Generating values for analog signal
+	std::generate(std::begin(analog), std::end(analog), [&angle]() { angle += 3.6f; return std::sinf(angle) * 360; });
+	// Transforming analog values into digital signal
+	std::transform(std::begin(analog), std::end(analog), std::begin(digital), [](const auto& i) { return static_cast<int>(std::roundf(i)); });
+
+	std::cout << "\n\nAnalog signal:\n";
+	print(analog);
+	std::cout << "\n\nDigital signal:\n";
+	print(digital);
+
+	//float i = *std::begin(analog) - *std::begin(digital);
+	//std::cout << "\nDiff = " << i * i;
+
+	// TODO: Calculate analog-digital error
 
 	return 0;
 }
