@@ -7,6 +7,7 @@
 #include <cmath>
 #include <vector>
 #include <algorithm>
+#include <numeric>
 #include <list>
 
 //////////////////////////////////////////
@@ -41,6 +42,16 @@ void insert_sorted_v2(C& container, const V& value) {
 	// why do we need "typename"???
 	typename C::iterator it = std::lower_bound(std::begin(container), std::end(container), value);
 	*std::inserter(container, it) = value;
+}
+
+//////////////////////////////////////////
+//	4.2
+//////////////////////////////////////////
+
+float CalculateError(const std::vector<float>& cnt1, const std::vector<int>& cnt2) {
+
+	auto error_func = [](const auto& i1, const auto& i2) -> float { float i = i1 - i2; return i * i; };
+	return std::inner_product(std::begin(cnt1), std::end(cnt1), std::begin(cnt2), 0.0f, std::plus<>(), error_func) / static_cast<float>(cnt1.size());
 }
 
 template <typename T>
@@ -120,10 +131,8 @@ int main() {
 	std::cout << "\n\nDigital signal:\n";
 	print(digital);
 
-	//float i = *std::begin(analog) - *std::begin(digital);
-	//std::cout << "\nDiff = " << i * i;
-
-	// TODO: Calculate analog-digital error
+	// Calculating error
+	std::cout << "\n\nError between analog and digital: " << CalculateError(analog, digital);
 
 	return 0;
 }
